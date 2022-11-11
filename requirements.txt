@@ -1,4 +1,4 @@
-black==22.1.0
+black==22.3.0
 Django==3.2.10
 djangorestframework==3.11.0
 pre-commit==2.20.0
