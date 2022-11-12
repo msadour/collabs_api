@@ -1,1 +1,1 @@
-"""Plugin module."""
+"""Plugin folder."""

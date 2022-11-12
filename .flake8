@@ -1,5 +1,5 @@
 [flake8]
 max_line_length = 120
-ignore = W503,C814,T000,VNE001, E231, RST304, D412, RST203
+ignore = W503,C814,T000,VNE001, E231, RST304, D412, RST203, A003
 inline-quotes = double
-exclude = migrations/ manage.py
+exclude = migrations/ manage.py /migrations

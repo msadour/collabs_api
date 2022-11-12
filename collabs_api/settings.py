@@ -29,14 +29,14 @@ ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
-ACCOUNT_APPS = []
+ACCOUNT_APPS = ["source.endpoints.account.apps.AccountConfig"]
 PRODUCT_APPS = []
 PROPOSITION_APPS = []
 CHAT_APPS = []
 NOTIFICATION_APPS = []
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    # "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -93,6 +93,8 @@ DATABASES = {
         "PORT": 5433,
     }
 }
+
+AUTH_USER_MODEL = "account.Account"
 
 
 # Password validation
