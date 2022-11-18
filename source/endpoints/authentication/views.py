@@ -15,8 +15,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import status
 
 from source.endpoints.authentication.serializers import AuthTokenSerializer
+from source.endpoints.authentication.utils import auth_user
 from source.layer.exception import AuthenticationError
-from source.utils.authentication import auth_user
 
 
 @permission_classes((permissions.AllowAny,))

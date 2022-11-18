@@ -1,12 +1,12 @@
 """Views account module."""
 
-from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from django.forms.models import model_to_dict
 
 from source.endpoints.account.models import Account
+from source.endpoints.account.utils import update_account
 
 
 class AccountViewSet(viewsets.ViewSet):
@@ -54,7 +54,21 @@ class AccountViewSet(viewsets.ViewSet):
         data: list = [model_to_dict(account) for account in Account.objects.all()]
         return Response(data, status=status.HTTP_200_OK)
 
-    def destroy(self, request: Request, pk: int = None):
+    def patch(self, request: Request):
+        """Update account.
+
+        Args:
+            request: request sent by the client.
+
+        Returns:
+            Response from the server.
+        """
+        data = request.data
+        user = request.user
+        update_account(data=data, user=user)
+        return Response(status=status.HTTP_200_OK)
+
+    def delete(self, request: Request):
         """Delete an account.
 
         Args:
@@ -64,10 +78,8 @@ class AccountViewSet(viewsets.ViewSet):
         Returns:
             Response from the server.
         """
-        try:
-            account: Account = Account.objects.get(id=pk)
-        except ObjectDoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        else:
-            account.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        account: Account = Account.objects.get(id=request.user.id)
+        account.delete()
+        return Response(
+            data={"message": "Account deleted"}, status=status.HTTP_204_NO_CONTENT
+        )
