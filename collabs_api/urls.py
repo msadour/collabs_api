@@ -20,4 +20,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path("api/account/", include("source.endpoints.account.urls")),
+    path("api/authentication/", include("source.endpoints.authentication.urls")),
 ]

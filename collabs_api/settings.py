@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 ACCOUNT_APPS = ["source.endpoints.account.apps.AccountConfig"]
+AUTHENTICATION_APPS = ["source.endpoints.authentication.apps.AuthenticationConfig"]
 PRODUCT_APPS = []
 PROPOSITION_APPS = []
 CHAT_APPS = []
@@ -42,8 +43,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework.authtoken",
 ]
 INSTALLED_APPS += ACCOUNT_APPS
+INSTALLED_APPS += AUTHENTICATION_APPS
 INSTALLED_APPS += PRODUCT_APPS
 INSTALLED_APPS += PROPOSITION_APPS
 INSTALLED_APPS += CHAT_APPS
