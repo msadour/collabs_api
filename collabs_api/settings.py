@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 ACCOUNT_APPS = ["source.endpoints.account.apps.AccountConfig"]
 AUTHENTICATION_APPS = ["source.endpoints.authentication.apps.AuthenticationConfig"]
-PRODUCT_APPS = []
+PRODUCT_APPS = ["source.endpoints.product.apps.ProductConfig"]
 PROPOSITION_APPS = []
 CHAT_APPS = []
 NOTIFICATION_APPS = []
