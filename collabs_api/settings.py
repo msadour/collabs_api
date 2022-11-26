@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ["*"]
 ACCOUNT_APPS = ["source.endpoints.account.apps.AccountConfig"]
 AUTHENTICATION_APPS = ["source.endpoints.authentication.apps.AuthenticationConfig"]
 PRODUCT_APPS = ["source.endpoints.product.apps.ProductConfig"]
-PROPOSITION_APPS = []
+PROPOSITION_APPS = ["source.endpoints.proposition.apps.PropositionConfig"]
 CHAT_APPS = []
 NOTIFICATION_APPS = []
 
@@ -103,8 +103,10 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
     ),
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ]
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
