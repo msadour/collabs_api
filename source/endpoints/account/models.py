@@ -21,10 +21,12 @@ class Account(AbstractBaseUser, PermissionsMixin):
     website = models.CharField(max_length=255)
     industry = models.CharField(max_length=255)
     speciality = models.CharField(max_length=255)
-    nb_employee = models.IntegerField()
+    nb_employee = models.IntegerField(default=0)
     headquarter = models.CharField(max_length=255)
     description = models.TextField()
 
     objects = UserManager()
 
     USERNAME_FIELD = "email"
+
+    REQUIRED_FIELDS = ["username"]

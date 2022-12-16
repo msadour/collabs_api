@@ -1,13 +1,9 @@
-"""Views account module."""
-
-from django.forms.models import model_to_dict
-
 from rest_framework import viewsets, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from source.endpoints.product.models import Product
-from source.endpoints.product.utils import ActionProduct
+from source.endpoints.product.serializers import ProductSerializer
+from source.endpoints.product.utils import ActionProduct, get_products
 
 
 class ProductViewSet(viewsets.ViewSet):
@@ -25,7 +21,7 @@ class ProductViewSet(viewsets.ViewSet):
         if bool(request.user and request.user.is_authenticated):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
-        action = ActionProduct(request=request)
+        action: ActionProduct = ActionProduct(request=request)
         action.publish_product()
         return Response(status=status.HTTP_201_CREATED)
 
@@ -38,9 +34,8 @@ class ProductViewSet(viewsets.ViewSet):
         Returns:
             Response from the server with list of users.
         """
-        data: list = [
-            model_to_dict(product) for product in Product.objects.filter(available=True)
-        ]
+        products = get_products(query_params=request.query_params)
+        data: ProductSerializer = ProductSerializer(products, many=True).data
         return Response(data, status=status.HTTP_200_OK)
 
     def patch(self, request: Request):
@@ -70,7 +65,7 @@ class ProductViewSet(viewsets.ViewSet):
         Returns:
             Response from the server.
         """
-        action = ActionProduct(request=request)
+        action: ActionProduct = ActionProduct(request=request)
 
         if not action.check_owner_product():
             return Response(status=status.HTTP_403_FORBIDDEN)

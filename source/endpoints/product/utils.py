@@ -1,5 +1,7 @@
 """Utils file."""
-from typing import Any
+from typing import Any, Optional
+
+from django.db.models import QuerySet
 
 from source.endpoints.product.models import Product, Category
 from source.layer.common.utils import get_object_or_none
@@ -58,3 +60,23 @@ class ActionProduct:
             proposer=self.user,
             category=category,
         )
+
+
+def get_products(query_params: dict) -> QuerySet:
+    category: Optional[str] = query_params.get("category", "all")
+    products: QuerySet = Product.objects.filter(available=True)
+
+    if category != "all":
+        category_obj: QuerySet = Category.objects.filter(
+            label__icontains=category
+        ).first()
+        if category_obj:
+            products = products.filter(category=category_obj)
+
+    for criteria, value in query_params.items():
+        if criteria == "quantity":
+            products = products.filter(quantity=value)
+        if criteria == "label":
+            products = products.filter(label__icontains=value)
+
+    return products
