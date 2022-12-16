@@ -1,5 +1,3 @@
-"""Utils file."""
-
 from typing import Any
 from datetime import datetime, timezone
 
@@ -9,15 +7,6 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 def get_object_or_none(model_class: Any, id_to_retrieve: Any) -> Any:
-    """Retrieve an object or return none.
-
-    Args:
-        model_class: Model class of django db.
-        id_to_retrieve:
-
-    Returns:
-        Object or none.
-    """
     if id_to_retrieve is None:
         return None
 
@@ -30,15 +19,6 @@ def get_object_or_none(model_class: Any, id_to_retrieve: Any) -> Any:
 
 
 def get_difference_between_now_and_date(date_to_compare: Any) -> str:
-    """
-    Get the difference between today and date notification.
-
-    Args:
-        date_to_compare:
-
-    Return:
-        Difference in years/months/week/days/hours/minutes/seconds
-    """
     now = datetime.now(timezone.utc)
     duration = now - date_to_compare.astimezone(pytz.timezone("Europe/Berlin"))
     duration_in_second = duration.total_seconds()
@@ -72,15 +52,7 @@ def get_difference_between_now_and_date(date_to_compare: Any) -> str:
 
 
 def translate_value(value: str) -> Any:
-    """
-    Get value as python from string.
-
-    Args:
-        value:
-
-    Return:
-        value in Python.
-    """
     if type(value) == str:
         return eval(value)
+
     return value

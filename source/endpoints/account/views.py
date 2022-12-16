@@ -1,5 +1,3 @@
-"""Views account module."""
-
 from rest_framework import viewsets, status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -10,18 +8,7 @@ from source.endpoints.account.utils import update_account
 
 
 class AccountViewSet(viewsets.ViewSet):
-    """Class AccountViewSet."""
-
     def create(self, request: Request) -> Response:
-        """Create a user.
-
-        Args:
-            request: request sent by the client.
-
-
-        Returns:
-            Response from the server.
-        """
         data: dict = request.data
         new_customer: Account = Account.objects.create_user(
             username=data.get("email"),
@@ -43,41 +30,16 @@ class AccountViewSet(viewsets.ViewSet):
         return Response(response_data, status=status.HTTP_201_CREATED)
 
     def list(self, request: Request) -> Response:
-        """List all account.
-
-        Args:
-            request: request sent by the client.
-
-        Returns:
-            Response from the server with list of users.
-        """
         data: list = [model_to_dict(account) for account in Account.objects.all()]
         return Response(data, status=status.HTTP_200_OK)
 
     def patch(self, request: Request):
-        """Update account.
-
-        Args:
-            request: request sent by the client.
-
-        Returns:
-            Response from the server.
-        """
         data = request.data
         user = request.user
         update_account(data=data, user=user)
         return Response(status=status.HTTP_200_OK)
 
     def delete(self, request: Request):
-        """Delete an account.
-
-        Args:
-            request: request sent by the client.
-            pk: id of account
-
-        Returns:
-            Response from the server.
-        """
         account: Account = Account.objects.get(id=request.user.id)
         account.delete()
         return Response(

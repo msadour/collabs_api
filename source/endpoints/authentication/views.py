@@ -1,5 +1,3 @@
-"""Views file."""
-
 from typing import Any
 
 from django.contrib.auth import logout as django_logout
@@ -21,21 +19,10 @@ from source.layer.exception import AuthenticationError
 
 @permission_classes((permissions.AllowAny,))
 class CustomAuthToken(ObtainAuthToken):
-    """Class CustomAuthToken."""
 
     authentication_classes = [TokenAuthentication]
 
     def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        """Authenticate a user.
-
-        Args:
-            request: request sent by the client.
-            args: Variable length argument list.
-            kwargs: Arbitrary keyword arguments.
-
-        Returns:
-            Response from the server.
-        """
         serializer = AuthTokenSerializer()
         try:
             data = auth_user(request=request, serializer=serializer)
@@ -47,19 +34,7 @@ class CustomAuthToken(ObtainAuthToken):
 
 @permission_classes((permissions.AllowAny,))
 class LogoutViewSet(viewsets.ViewSet):
-    """Class LogoutViewSet."""
-
     def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        """Logout a user.
-
-        Args:
-            request: request sent by the client.
-            args: Variable length argument list.
-            kwargs: Arbitrary keyword arguments.
-
-        Returns:
-            Response from the server.
-        """
         try:
             request.user.auth_token.delete()
         except (AttributeError, ObjectDoesNotExist):

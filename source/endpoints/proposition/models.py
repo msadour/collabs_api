@@ -1,5 +1,3 @@
-"""Model file."""
-
 from django.utils.timezone import now
 
 from django.db import models
@@ -9,14 +7,12 @@ from source.endpoints.product.models import Product
 
 
 class Status(models.TextChoices):
-    """Class Status."""
 
     ACCEPTED = "accepted"
     DECLINED = "declined"
 
 
 class Proposition(models.Model):
-    """Class Proposition."""
 
     seller = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="seller")
     requestor = models.ForeignKey(
@@ -34,6 +30,5 @@ class Proposition(models.Model):
     objects = models.Manager()
 
     class Meta:
-        """Class Meta."""
 
         unique_together = ("seller", "requestor", "product")

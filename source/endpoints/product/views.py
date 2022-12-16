@@ -7,17 +7,7 @@ from source.endpoints.product.utils import ActionProduct, get_products
 
 
 class ProductViewSet(viewsets.ViewSet):
-    """Class ProductViewSet."""
-
     def create(self, request: Request) -> Response:
-        """Create a product.
-
-        Args:
-            request: request sent by the client.
-
-        Returns:
-            Response from the server.
-        """
         if bool(request.user and request.user.is_authenticated):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
@@ -26,27 +16,11 @@ class ProductViewSet(viewsets.ViewSet):
         return Response(status=status.HTTP_201_CREATED)
 
     def list(self, request: Request) -> Response:
-        """List all product.
-
-        Args:
-            request: request sent by the client.
-
-        Returns:
-            Response from the server with list of users.
-        """
         products = get_products(query_params=request.query_params)
         data: ProductSerializer = ProductSerializer(products, many=True).data
         return Response(data, status=status.HTTP_200_OK)
 
     def patch(self, request: Request):
-        """Update a product.
-
-        Args:
-            request: request sent by the client.
-
-        Returns:
-            Response from the server.
-        """
         action = ActionProduct(request=request)
 
         if not action.check_owner_product():
@@ -57,14 +31,6 @@ class ProductViewSet(viewsets.ViewSet):
         return Response(status=status.HTTP_200_OK)
 
     def delete(self, request: Request):
-        """Delete a product.
-
-        Args:
-            request: request sent by the client.
-
-        Returns:
-            Response from the server.
-        """
         action: ActionProduct = ActionProduct(request=request)
 
         if not action.check_owner_product():

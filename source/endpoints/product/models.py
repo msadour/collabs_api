@@ -1,5 +1,3 @@
-"""Models file."""
-
 from django.utils.timezone import now
 
 from django.db import models
@@ -9,24 +7,16 @@ from source.layer.common.utils import get_difference_between_now_and_date
 
 
 class Category(models.Model):
-    """Class Category."""
 
     label = models.CharField(max_length=255, blank=True, unique=True)
 
     objects = models.Manager()
 
     def __str__(self) -> str:
-        """
-        Return object representation.
-
-        Returns:
-            id dp  world.
-        """
         return f"{self.label}"
 
 
 class Product(models.Model):
-    """Class Product."""
 
     label = models.CharField(max_length=255, default="")
     quantity = models.IntegerField(default=0)
@@ -40,19 +30,8 @@ class Product(models.Model):
 
     @property
     def published_since(self) -> str:
-        """Difference between dates notification and now for serializer.
-
-        Returns:
-            difference between dates.
-        """
         published = get_difference_between_now_and_date(self.date)
         return f"Published since {published} ago"
 
     def __str__(self) -> str:
-        """
-        Return object representation.
-
-        Returns:
-            id dp  world.
-        """
         return f"{self.label}"

@@ -1,7 +1,4 @@
-"""User serializer module."""
-
-
-from typing import Any
+from typing import Any, Optional
 
 from django.contrib.auth.hashers import check_password
 from django.http import QueryDict
@@ -12,24 +9,16 @@ from source.layer.exception import AuthenticationError
 
 
 class AuthTokenSerializer(serializers.Serializer):
-    """Serializer for the user authentication object."""
 
-    username = serializers.CharField()
-    password = serializers.CharField(
+    username: serializers.CharField = serializers.CharField()
+    password: serializers.CharField = serializers.CharField(
         style={"input_type": "password"}, trim_whitespace=False
     )
 
-    def authenticate_user(self, email: str = None, password: str = None) -> Any:
-        """Authenticate with username and password.
-
-        Args:
-            email:
-            password:
-
-        Returns:
-            User.
-        """
-        user = Account.objects.filter(email=email).first()
+    def authenticate_user(
+        self, email: str = None, password: str = None
+    ) -> Optional[Account]:
+        user: Account = Account.objects.filter(email=email).first()
 
         if user is None:
             raise AuthenticationError("Not user found with this email.")
@@ -43,17 +32,11 @@ class AuthTokenSerializer(serializers.Serializer):
         return user
 
     def validate(self, attrs: Any) -> Account:
-        """Validate a member with credentials.
-
-        Args:
-            attrs: Datas from the view.
-
-        Returns:
-            User authenticate.
-        """
         if type(attrs) == QueryDict:
             attrs = attrs.dict()
-        email = attrs.get("email")
-        password = attrs.get("password")
-        user = self.authenticate_user(email=email, password=password)
+
+        email: str = attrs.get("email")
+        password: str = attrs.get("password")
+        user: Optional[Account] = self.authenticate_user(email=email, password=password)
+
         return user

@@ -1,5 +1,3 @@
-"""Account model file."""
-
 from django.db import models
 
 from django.contrib.auth.base_user import AbstractBaseUser
@@ -7,7 +5,6 @@ from django.contrib.auth.models import PermissionsMixin, UserManager
 
 
 class Account(AbstractBaseUser, PermissionsMixin):
-    """Class Account."""
 
     email = models.EmailField(max_length=255, unique=True)
     username = models.CharField(max_length=255, default="")

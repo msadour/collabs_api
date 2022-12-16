@@ -1,10 +1,8 @@
-"""Urls module."""
-
 from rest_framework.routers import DefaultRouter
 
 from source.endpoints.account.views import AccountViewSet
 
-router = DefaultRouter()
+router: DefaultRouter = DefaultRouter()
 router.register(r"", AccountViewSet, basename="logout")
 
-urlpatterns = router.urls
+urlpatterns: list = router.urls
