@@ -2,8 +2,10 @@ from typing import Optional
 
 from django.db.models import QuerySet
 
+from source.endpoints.account.models import Account
 from source.endpoints.product.models import Product, Category
 from source.layer.common.utils import get_object_or_none
+from source.plugin.address.models import LocationProduct
 
 
 class ActionProduct:
@@ -37,29 +39,50 @@ class ActionProduct:
             model_class=Category, id_to_retrieve=self.data.get("category", None)
         )
 
+        location = LocationProduct.objects.create(
+            country=self.data.get("country", self.user.address.country),
+            region=self.data.get("region", self.user.address.region),
+            city=self.data.get("city", self.user.address.city),
+        )
+
         Product.objects.create(
             label=self.data.get("label"),
             quantity=self.data.get("quantity"),
             description=self.data.get("description"),
             proposer=self.user,
             category=category,
+            location=location,
         )
 
 
 def get_products(query_params: dict) -> QuerySet:
-    category: Optional[str] = query_params.get("category", "all")
     products: QuerySet = Product.objects.filter(available=True)
 
-    if category != "all":
-        category_obj: QuerySet = Category.objects.filter(
-            label__icontains=category
-        ).first()
-        if category_obj:
-            products = products.filter(category=category_obj)
-
     for criteria, value in query_params.items():
+        if criteria == "criteria":
+            if value != "all":
+                category_obj: QuerySet = Category.objects.filter(
+                    label__icontains=value
+                ).first()
+                if category_obj:
+                    products = products.filter(category=category_obj)
+
+        if criteria == "company":
+            company = Account.objects.get(id=value)
+            products = products.filter(proposer=company)
+
+        if criteria == "country":
+            products = products.filter(proposer__address__country=value)
+
+        if criteria == "region":
+            products = products.filter(proposer__address__region=value)
+
+        if criteria == "city":
+            products = products.filter(proposer__address__city=value)
+
         if criteria == "quantity":
             products = products.filter(quantity=value)
+
         if criteria == "label":
             products = products.filter(label__icontains=value)
 

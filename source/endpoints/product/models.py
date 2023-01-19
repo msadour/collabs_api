@@ -4,6 +4,7 @@ from django.db import models
 
 from source.endpoints.account.models import Account
 from source.layer.common.utils import get_difference_between_now_and_date
+from source.plugin.address.models import LocationProduct
 
 
 class Category(models.Model):
@@ -23,6 +24,7 @@ class Product(models.Model):
     date = models.DateTimeField(default=now)
     description = models.TextField(blank=True)
     proposer = models.ForeignKey(Account, on_delete=models.CASCADE)
+    location = models.ForeignKey(LocationProduct, on_delete=models.CASCADE, null=True)
     available = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 

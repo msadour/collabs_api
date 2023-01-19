@@ -4,6 +4,7 @@ from django.db import models
 
 from source.endpoints.account.models import Account
 from source.endpoints.product.models import Product
+from source.plugin.address.models import Address
 
 
 class Status(models.TextChoices):
@@ -23,6 +24,7 @@ class Proposition(models.Model):
     place = models.CharField(max_length=255)
     date_meeting = models.DateTimeField(default=now)
     date_closing = models.DateTimeField(null=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     closed = models.BooleanField(default=False)
     status = models.CharField(max_length=255, choices=Status.choices, null=True)
     comment = models.TextField()

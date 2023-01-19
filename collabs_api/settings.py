@@ -29,12 +29,14 @@ ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
-ACCOUNT_APPS = ["source.endpoints.account.apps.AccountConfig"]
-AUTHENTICATION_APPS = ["source.endpoints.authentication.apps.AuthenticationConfig"]
-PRODUCT_APPS = ["source.endpoints.product.apps.ProductConfig"]
-PROPOSITION_APPS = ["source.endpoints.proposition.apps.PropositionConfig"]
-CHAT_APPS = []
-NOTIFICATION_APPS = []
+
+ENDPOINTS_APPS = [
+    "source.endpoints.account.apps.AccountConfig",
+    "source.endpoints.authentication.apps.AuthenticationConfig",
+    "source.endpoints.product.apps.ProductConfig",
+    "source.endpoints.proposition.apps.PropositionConfig",
+]
+PLUGINS_APPS = ["source.plugin.address.apps.AddressConfig"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -45,12 +47,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework.authtoken",
 ]
-INSTALLED_APPS += ACCOUNT_APPS
-INSTALLED_APPS += AUTHENTICATION_APPS
-INSTALLED_APPS += PRODUCT_APPS
-INSTALLED_APPS += PROPOSITION_APPS
-INSTALLED_APPS += CHAT_APPS
-INSTALLED_APPS += NOTIFICATION_APPS
+INSTALLED_APPS += ENDPOINTS_APPS
+INSTALLED_APPS += PLUGINS_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
