@@ -20,16 +20,15 @@ from source.layer.exception import AuthenticationError
 @permission_classes((permissions.AllowAny,))
 class CustomAuthToken(ObtainAuthToken):
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes: list = [TokenAuthentication]
 
     def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        serializer = AuthTokenSerializer()
+        serializer: AuthTokenSerializer = AuthTokenSerializer()
         try:
-            data = auth_user(request=request, serializer=serializer)
+            data: dict = auth_user(request=request, serializer=serializer)
             return Response(data=data, status=201)
         except AuthenticationError as e:
-            data = {"error": str(e)}
-            return Response(data=data, status=400)
+            return Response(data={"error": str(e)}, status=400)
 
 
 @permission_classes((permissions.AllowAny,))

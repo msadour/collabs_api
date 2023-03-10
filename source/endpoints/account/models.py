@@ -6,6 +6,17 @@ from django.contrib.auth.models import PermissionsMixin, UserManager
 from source.plugin.address.models import Address
 
 
+class Industry(models.Model):
+
+    label = models.CharField(max_length=255)
+
+
+class Speciality(models.Model):
+
+    label = models.CharField(max_length=255)
+    industry = models.ForeignKey(Industry, on_delete=models.CASCADE)
+
+
 class Account(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=255, unique=True)
@@ -18,11 +29,12 @@ class Account(AbstractBaseUser, PermissionsMixin):
     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     phone = models.CharField(max_length=255)
     website = models.CharField(max_length=255)
-    industry = models.CharField(max_length=255)
+    industry = models.ForeignKey(Industry, on_delete=models.CASCADE, null=True)
     speciality = models.CharField(max_length=255)
     nb_employee = models.IntegerField(default=0)
     headquarter = models.CharField(max_length=255)
     description = models.TextField()
+    create_at = models.DateTimeField()
 
     objects = UserManager()
 
