@@ -10,11 +10,12 @@ from source.endpoints.proposition.utils import (
     get_queryset_propositions,
     cancel_proposition,
 )
+from source.layer.common.permissions import UpdateOwnerPermission
 
 
 class PropositionViewSet(viewsets.ViewSet):
 
-    permission_classes: list = [IsAuthenticated]
+    permission_classes: list = [IsAuthenticated, UpdateOwnerPermission]
     serializer_class: PropositionSerializer = PropositionSerializer
 
     def list(self, request: Request) -> Response:

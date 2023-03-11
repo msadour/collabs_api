@@ -5,12 +5,14 @@ from rest_framework.response import Response
 
 from source.endpoints.account.models import Account
 from source.endpoints.account.serializers import AccountSerializer
+from source.layer.common.permissions import UpdateOwnerPermission
 
 
 class AccountViewSet(viewsets.ModelViewSet):
 
     serializer_class: AccountSerializer = AccountSerializer
     queryset: QuerySet = Account.objects.all()
+    permission_classes = (UpdateOwnerPermission,)
 
     def create(self, request: Request, *args, **kwargs) -> Response:
         new_customer: Account = self.serializer_class.create(

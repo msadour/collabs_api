@@ -6,10 +6,12 @@ from rest_framework.response import Response
 from source.endpoints.product.models import Product
 from source.endpoints.product.serializers import ProductPublishedSerializer
 from source.endpoints.product.utils import get_products
+from source.layer.common.permissions import ReadOnlyPermission
 
 
 class ProductsAvailableViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProductPublishedSerializer
+    permission_classes = (ReadOnlyPermission,)
 
     def list(self, request: Request, *args, **kwargs) -> Response:
         products: QuerySet = get_products(query_params=request.query_params)

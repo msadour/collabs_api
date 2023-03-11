@@ -6,12 +6,13 @@ from rest_framework.permissions import IsAuthenticated
 
 from source.endpoints.product.models import Product
 from source.endpoints.product.serializers import ProductSerializer
+from source.layer.common.permissions import ManagementPermission
 
 
 class ProductViewSet(viewsets.ViewSet):
 
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, ManagementPermission]
 
     def create(self, request: Request) -> Response:
         data: dict = request.data.copy()
