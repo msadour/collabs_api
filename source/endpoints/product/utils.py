@@ -8,13 +8,12 @@ def get_products(query_params: dict) -> QuerySet:
     products: QuerySet = Product.objects.filter(available=True)
 
     for criteria, value in query_params.items():
-        if criteria == "criteria":
-            if value != "all":
-                category_obj: QuerySet = Category.objects.filter(
-                    label__icontains=value
-                ).first()
-                if category_obj:
-                    products = products.filter(category=category_obj)
+        if criteria == "category" and value != "all":
+            products: QuerySet = (
+                Category.objects.filter(label__icontains=value)
+                .first()
+                .product_rel.all()
+            )
 
         if criteria == "company":
             company = Account.objects.get(id=value)

@@ -5,22 +5,22 @@ from source.endpoints.account.utils import update_account
 
 
 class AccountSerializer(serializers.Serializer):
-    def save(self, data):
+    def create(self, validated_data):
         new_customer: Account = Account.objects.create_user(
-            username=data.get("email"),
-            email=data.get("email"),
-            password=data.get("password"),
-            company_name=data.get("company_name"),
-            siret=data.get("siret"),
-            k_bis=data.get("k_bis"),
-            address=data.get("address"),
-            phone=data.get("phone"),
-            website=data.get("website"),
-            industry=data.get("industry"),
-            speciality=data.get("speciality"),
-            nb_employee=data.get("nb_employee"),
-            headquarter=data.get("headquarter"),
-            description=data.get("description"),
+            username=validated_data.get("email"),
+            email=validated_data.get("email"),
+            password=validated_data.get("password"),
+            company_name=validated_data.get("company_name"),
+            siret=validated_data.get("siret"),
+            k_bis=validated_data.get("k_bis"),
+            address=validated_data.get("address"),
+            phone=validated_data.get("phone"),
+            website=validated_data.get("website"),
+            industry=validated_data.get("industry"),
+            speciality=validated_data.get("speciality"),
+            nb_employee=validated_data.get("nb_employee"),
+            headquarter=validated_data.get("headquarter"),
+            description=validated_data.get("description"),
         )
         return new_customer
 

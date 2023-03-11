@@ -8,8 +8,8 @@ from source.plugin.address.models import LocationProduct
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
 
-        model = Product
-        fields = ("label",)
+        model = Category
+        fields = "__all__"
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -36,10 +36,13 @@ class ProductSerializer(serializers.ModelSerializer):
             location=location,
         )
 
-    def update(self, instance, validated_data):
-        for attr, value in validated_data:
+    def update(self, instance: Product, validated_data: dict):
+        for attr, value in validated_data.items():
             if attr in ["label", "quantity", "description"]:
                 setattr(instance, attr, value)
+            if attr == "category":
+                new_category: Category = Category.objects.get(id=value)
+                instance.category = new_category
 
         instance.save()
 
@@ -47,3 +50,14 @@ class ProductSerializer(serializers.ModelSerializer):
 
         model = Product
         fields = "__all__"
+
+
+class ProductPublishedSerializer(serializers.ModelSerializer):
+
+    category = CategorySerializer(many=False)
+    published_since = serializers.ReadOnlyField()
+
+    class Meta:
+
+        model = Product
+        exclude = ("id", "date")

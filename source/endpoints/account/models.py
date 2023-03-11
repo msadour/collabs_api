@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.timezone import now
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, UserManager
 
@@ -34,7 +34,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     nb_employee = models.IntegerField(default=0)
     headquarter = models.CharField(max_length=255)
     description = models.TextField()
-    create_at = models.DateTimeField()
+    create_at = models.DateTimeField(default=now)
 
     objects = UserManager()
 

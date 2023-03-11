@@ -55,3 +55,4 @@ class PropositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Proposition
+        fields = "__all__"

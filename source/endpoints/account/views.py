@@ -13,7 +13,9 @@ class AccountViewSet(viewsets.ModelViewSet):
     queryset: QuerySet = Account.objects.all()
 
     def create(self, request: Request, *args, **kwargs) -> Response:
-        new_customer: Account = self.serializer_class.save(data=request.data)
+        new_customer: Account = self.serializer_class.create(
+            validated_data=request.data
+        )
         data: dict = self.serializer_class(new_customer).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
@@ -21,11 +23,11 @@ class AccountViewSet(viewsets.ModelViewSet):
         data: list = self.serializer_class(self.queryset, many=True).data
         return Response(data, status=status.HTTP_200_OK)
 
-    def patch(self, request: Request):
+    def patch(self, request: Request) -> Response:
         self.serializer_class.update(instance=request.user, validated_data=request.data)
         return Response(status=status.HTTP_200_OK)
 
-    def delete(self, request: Request):
+    def delete(self, request: Request) -> Response:
         account: Account = Account.objects.get(id=request.user.id)
         account.delete()
         return Response(

@@ -24,13 +24,18 @@ class PropositionViewSet(viewsets.ViewSet):
         data: dict = self.serializer_class(queryset_proposition, many=True).data
         return Response(data=data, status=status.HTTP_200_OK)
 
+    def retrieve(self, request, pk: int = None, *args, **kwargs) -> Response:
+        proposition: Proposition = Proposition.objects.get(id=pk)
+        data: dict = self.serializer_class(proposition).data
+        return Response(data=data, status=status.HTTP_200_OK)
+
     def create(self, request: Request) -> Response:
         data: dict = request.data.copy()
         data["seller"] = request.user.id
         self.serializer_class().create(validated_data=data)
         return Response(status=status.HTTP_201_CREATED)
 
-    def patch(self, request: Request):
+    def patch(self, request: Request) -> Response:
         proposition_id: str = request.data.get("id")
         proposition: Proposition = Proposition.objects.get(proposition_id)
         self.serializer_class().update(
@@ -38,6 +43,6 @@ class PropositionViewSet(viewsets.ViewSet):
         )
         return Response(status=status.HTTP_200_OK)
 
-    def delete(self, request: Request):
+    def delete(self, request: Request) -> Response:
         cancel_proposition(data=request.data)
         return Response(status=status.HTTP_204_NO_CONTENT)
