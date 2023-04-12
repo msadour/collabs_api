@@ -15,7 +15,7 @@ class AccountViewSet(viewsets.ModelViewSet):
     permission_classes = (UpdateOwnerPermission,)
 
     def create(self, request: Request, *args, **kwargs) -> Response:
-        new_customer: Account = self.serializer_class.create(
+        new_customer: Account = self.serializer_class().create(
             validated_data=request.data
         )
         data: dict = self.serializer_class(new_customer).data

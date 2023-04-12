@@ -1,8 +1,6 @@
 .env
 .idea/
 .idea
-/__pycache__/
-*/__pycache__/*
-/__pycache__/*
-*/__pycache__/
 local_script
+__pycache__/
+source/__pycache__/

@@ -1,11 +1,13 @@
 from rest_framework import serializers
 
-from source.endpoints.account.models import Account
-from source.endpoints.account.utils import update_account
+from source.endpoints.account.models import Account, Industry
+from source.plugin.address.models import Address
 
 
-class AccountSerializer(serializers.Serializer):
+class AccountSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
+        address = Address.objects.get(id=1)
+        industry = Industry.objects.get(id=1)
         new_customer: Account = Account.objects.create_user(
             username=validated_data.get("email"),
             email=validated_data.get("email"),
@@ -13,10 +15,10 @@ class AccountSerializer(serializers.Serializer):
             company_name=validated_data.get("company_name"),
             siret=validated_data.get("siret"),
             k_bis=validated_data.get("k_bis"),
-            address=validated_data.get("address"),
+            address=address,
             phone=validated_data.get("phone"),
             website=validated_data.get("website"),
-            industry=validated_data.get("industry"),
+            industry=industry,
             speciality=validated_data.get("speciality"),
             nb_employee=validated_data.get("nb_employee"),
             headquarter=validated_data.get("headquarter"),
@@ -25,8 +27,22 @@ class AccountSerializer(serializers.Serializer):
         return new_customer
 
     def update(self, instance, validated_data):
-        update_account(data=validated_data, user=instance)
-        return instance
+        for attr, value in validated_data.items():
+            if hasattr(instance, attr):
+                if attr == "password":
+                    instance.set_password(value)
+                elif attr not in [
+                    "last_login",
+                    "is_superuser",
+                    "id",
+                    "is_staff",
+                    "groups",
+                    "user_permissions",
+                ]:
+                    setattr(instance, attr, value)
+
+        instance.save()
 
     class Meta:
         model = Account
+        fields = "__all__"

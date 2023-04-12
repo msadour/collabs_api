@@ -35,3 +35,14 @@ class UpdateOwnerPermission(permissions.BasePermission):
                 return request.user == obj.seller
 
         return False
+
+
+class MessagePermission(permissions.BasePermission):
+    def has_object_permission(self, request: Request, view: ViewSet, obj: Any) -> bool:
+        if view.action in ["put", "patch", "delete"]:
+            return obj.author == request.user
+
+
+class ChatPermission(permissions.BasePermission):
+    def has_object_permission(self, request: Request, view: ViewSet, obj: Any) -> bool:
+        return request.user in obj.participant.all()

@@ -25,4 +25,5 @@ urlpatterns = [
     path("api/authentication/", include("source.endpoints.authentication.urls")),
     path("api/product/", include("source.endpoints.product.urls")),
     path("api/proposition/", include("source.endpoints.proposition.urls")),
+    path("api/mailbox/", include("source.endpoints.chat.urls")),
 ]

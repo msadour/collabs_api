@@ -35,6 +35,7 @@ ENDPOINTS_APPS = [
     "source.endpoints.authentication.apps.AuthenticationConfig",
     "source.endpoints.product.apps.ProductConfig",
     "source.endpoints.proposition.apps.PropositionConfig",
+    "source.endpoints.chat.apps.ChatConfig",
 ]
 PLUGINS_APPS = ["source.plugin.address.apps.AddressConfig"]
 
