@@ -23,6 +23,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, default="")
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_banned = models.BooleanField(default=False)
     company_name = models.CharField(max_length=255)
     siret = models.CharField(max_length=255)
     k_bis = models.CharField(max_length=255)
@@ -41,3 +42,10 @@ class Account(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["username"]
+
+
+class IPBanned(models.Model):
+
+    ip = models.GenericIPAddressField()
+
+    objects = models.Manager()
