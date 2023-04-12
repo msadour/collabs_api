@@ -1,14 +1,15 @@
 from django.http import JsonResponse
 from rest_framework.request import Request
 
-from source.endpoints.account.models import IPBanned
+from source.endpoints.security.models import IPBanned
 
 
 class CheckIPMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
-    def ip_banned(self, request: Request) -> bool:
+    @staticmethod
+    def ip_banned(request: Request) -> bool:
         x_forwarded_for: str = request.META.get("HTTP_X_FORWARDED_FOR")
         ip: str = (
             x_forwarded_for.split(",")[0]

@@ -42,10 +42,3 @@ class Account(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["username"]
-
-
-class IPBanned(models.Model):
-
-    ip = models.GenericIPAddressField()
-
-    objects = models.Manager()

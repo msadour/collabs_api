@@ -1,10 +1,9 @@
 from django.db.models import QuerySet
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from source.endpoints.account.models import Account, IPBanned
+from source.endpoints.account.models import Account
 from source.endpoints.account.serializers import AccountSerializer
 from source.layer.common.permissions import UpdateOwnerPermission
 
@@ -36,9 +35,3 @@ class AccountViewSet(viewsets.ModelViewSet):
         return Response(
             data={"message": "Account deleted"}, status=status.HTTP_204_NO_CONTENT
         )
-
-
-class IPBannedViewset(viewsets.ModelViewSet):
-
-    queryset: QuerySet = IPBanned.objects.all()
-    permission_classes = (IsAdminUser,)
